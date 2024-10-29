@@ -3,97 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tilak's Tech Website</title>
+    <title>Tilak's Website</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #121212;
-            color: #f0f0f0;
+            background-color: #0e0e0e;
+            color: #fff;
         }
         header {
-            background: #1e1e1e;
+            background: linear-gradient(90deg, rgba(255, 0, 0, 0.8), rgba(0, 0, 255, 0.8));
+            color: #fff;
             padding: 20px 0;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-        h1 {
-            margin: 0;
-            font-size: 2.5em;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5), 0 0 20px rgba(0, 0, 255, 0.5);
         }
         nav {
-            margin: 20px 0;
-            background: #282828;
-            padding: 10px 0;
-            border-radius: 8px;
+            margin: 0;
+            padding: 15px 0;
+            background: rgba(50, 50, 50, 0.8);
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
         }
         nav a {
-            color: #1db954;
+            color: #fff;
             margin: 0 15px;
             text-decoration: none;
-            font-weight: bold;
             transition: color 0.3s;
         }
         nav a:hover {
-            color: #fff;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #0000ff;
         }
         section {
             padding: 20px;
-            margin: 20px auto;
-            max-width: 800px;
-            background: #1e1e1e;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            margin: 20px;
         }
-        h2 {
-            border-bottom: 2px solid #1db954;
-            padding-bottom: 10px;
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            justify-content: center;
         }
-        p {
-            line-height: 1.6;
-        }
-        footer {
-            text-align: center;
-            padding: 20px 0;
-            background: #1e1e1e;
+        .button-container button {
+            margin: 5px;
+            padding: 15px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
             position: relative;
-            bottom: 0;
-            width: 100%;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(0, 0, 255, 0.6);
+            transition: transform 0.3s;
+        }
+        .button-container button:hover {
+            transform: scale(1.1);
+            background-color: #45a049;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8), 0 0 30px rgba(0, 0, 255, 0.8);
+        }
+        .wallet-tab {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            text-decoration: none;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5), 0 0 20px rgba(0, 0, 255, 0.5);
+        }
+        .balance {
+            font-size: 1em;
+            color: #4CAF50;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        .history-container {
+            padding: 20px;
+        }
+        .history-item {
+            background: rgba(50, 50, 50, 0.8);
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .invested {
+            background-color: rgba(255, 112, 77, 0.8) !important;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Welcome to Tilak's Tech Website</h1>
+    <h1>Welcome to Tilak's Website</h1>
+    <a href="#wallet" class="wallet-tab">Wallet<span class="balance">₹1000.00</span></a>
 </header>
 
 <nav>
     <a href="#home">Home</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
+    <a href="#history">History</a>
 </nav>
 
 <section id="home">
     <h2>Home</h2>
-    <p>This is the home page of Tilak's tech website. Explore innovative ideas, technology trends, and much more!</p>
+    <p>This is the home page of Tilak's website. Here you'll find information about various topics.</p>
 </section>
 
 <section id="about">
     <h2>About</h2>
-    <p>This section contains information about Tilak. Share your hobbies, interests, and professional background related to technology here.</p>
+    <p>This section contains information about Tilak. You can talk about your hobbies, interests, or professional background here.</p>
 </section>
 
 <section id="contact">
     <h2>Contact</h2>
-    <p>If you want to get in touch, provide your contact information or social media links here.</p>
+    <p>If you want to get in touch, you can provide your contact information here.</p>
 </section>
 
-<footer>
-    <p>&copy; 2024 Tilak. All rights reserved.</p>
-</footer>
+<section id="buttons">
+    <h2>Buttons 00 to 99</h2>
+    <div class="button-container">
+        <script>
+            let balance = 1000.00;
+            let history = [];
+
+            function updateBalance() {
+                document.querySelector('.balance').innerText = '₹' + balance.toFixed(2);
+            }
+
+            function updateHistory() {
+                let historyContainer = document.querySelector('.history-container');
+                historyContainer.innerHTML = '';
+                history.forEach(item => {
+                    let historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerText = `Invested ₹${item.amount} on button ${item.button} at ${item.date}`;
+                    historyContainer.appendChild(historyItem);
+                });
+            }
+
+            for (let i = 0; i < 100; i++) {
+                let button = document.createElement('button');
+                button.innerText = i.toString().padStart(2, '0');
+                button.onclick = function() {
+                    let amount = prompt('Enter amount to invest in ₹:');
+                    if (amount && !isNaN(amount)) {
+                        amount = parseFloat(amount);
+                        if (amount <= balance) {
+                            balance -= amount;
+                            let now = new Date();
+                            let date = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+                            history.push({ button: i.toString().padStart(2, '0'), amount, date });
+                            updateBalance();
+                            updateHistory();
+                            button.classList.add('invested');
+                            alert(`You have invested ₹${amount}. New balance: ₹${balance.toFixed(2)}`);
+                        } else {
+                            alert('Insufficient balance.');
+                        }
+                    } else {
+                        alert('Please enter a valid number.');
+                    }
+                };
+                document.querySelector('.button-container').appendChild(button);
+            }
+
+            updateBalance();
+        </script>
+    </div>
+</section>
+
+<section id="wallet">
+    <h2>Wallet</h2>
+    <p>Manage your finances and transactions here.</p>
+</section>
+
+<section id="history">
+    <h2>History</h2>
+    <div class="history-container">
+        <!-- Transaction history will be displayed here -->
+    </div>
+</section>
 
 </body>
 </html>
