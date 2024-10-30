@@ -78,7 +78,7 @@
             box-shadow: 0 0 20px #39ff14, 0 0 30px #39ff14;
         }
         .wallet-tab {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             background-color: #1a1a1a;
@@ -88,6 +88,7 @@
             border: 1px solid #39ff14;
             text-decoration: none;
             transition: background-color 0.3s, box-shadow 0.3s;
+            z-index: 1000;
         }
         .wallet-tab:hover {
             background-color: #0f0f0f;
@@ -111,101 +112,220 @@
         .invested {
             background-color: #ff704d !important;
         }
+        .invest-multiple {
+            margin: 20px;
+            padding: 15px 30px;
+            background-color: #39ff14;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14;
+            font-size: 1.2em;
+        }
+        .invest-multiple:hover {
+            background-color: #32c54a;
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px #39ff14, 0 0 30px #39ff14;
+        }
+        .investing-button {
+            background-color: #39ff14;
+            color: black;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14;
+        }
+        .investing-button:hover {
+            background-color: #32c54a;
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px #39ff14, 0 0 30px #39ff14;
+        }
+        .add-money-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .add-money-button {
+            padding: 10px 20px;
+            background-color: #39ff14;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .add-money-button:hover {
+            background-color: #32c54a;
+        }
     </style>
 </head>
 <body>
-
 <header>
     <h1>Welcome to Tilak's Neon Tech Hub</h1>
     <a href="#wallet" class="wallet-tab">Wallet<span class="balance">₹1000.00</span></a>
 </header>
-
 <nav>
     <a href="#home">Home</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
     <a href="#history">History</a>
 </nav>
-
 <section id="home">
     <h2>Home</h2>
     <p>This is the home page of Tilak's tech hub. Explore innovative ideas and technologies here.</p>
-</section>
+    
+    <button class="investing-button" onclick="toggleButtons('button-container-01', 'Investing 01')">Investing 01</button>
+    <div class="button-container" id="button-container-01" style="display: none;"></div>
 
+    <button class="investing-button" onclick="toggleButtons('button-container-02', 'Investing 02')">Investing 02</button>
+    <div class="button-container" id="button-container-02" style="display: none;"></div>
+
+    <button class="investing-button" onclick="toggleButtons('button-container-03', 'Investing 03')">Investing 03</button>
+    <div class="button-container" id="button-container-03" style="display: none;"></div>
+
+    <button class="investing-button" onclick="toggleButtons('button-container-04', 'Investing 04')">Investing 04</button>
+    <div class="button-container" id="button-container-04" style="display: none;"></div>
+    
+    <script>
+        let balance = 1000.00;
+        let history = [];
+
+        function updateBalance() {
+            document.querySelector('.balance').innerText = '₹' + balance.toFixed(2);
+        }
+
+        function updateHistory() {
+            let historyContainer = document.querySelector('.history-container');
+            historyContainer.innerHTML = '';
+            history.forEach(item => {
+                let historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerText = `Invested ₹${item.amount} in ${item.tabName} on button ${item.button} at ${item.date}`;
+                historyContainer.appendChild(historyItem);
+            });
+        }
+
+        function investMoney(button, amount, tabName) {
+            balance -= amount;
+            let now = new Date();
+            let date = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+            history.push({ button, amount, date, tabName });
+            updateBalance();
+            updateHistory();
+            document.querySelector(`button[data-number='${button}']`).classList.add('invested');
+            alert(`You have invested ₹${amount} in ${tabName}. New balance: ₹${balance.toFixed(2)}`);
+        }
+
+        function promptInvestment(tabName) {
+            let input = prompt('Enter numbers to invest in, separated by commas (e.g., 01, 02, 03):');
+            if (input) {
+                let numbers = input.split(',').map(num => num.trim());
+                let amount = prompt('Enter amount to invest in ₹:');
+                if (amount && !isNaN(amount)) {
+                    amount = parseFloat(amount);
+                    if (amount <= balance) {
+                        numbers.forEach(number => {
+                            if (number.match(/^\d{2}$/) && number < 100) {
+                                investMoney(number, amount, tabName);
+                            } else {
+                                alert(`Invalid number: ${number}`);
+                            }
+                        });
+                    } else {
+                        alert('Insufficient balance.');
+                    }
+                } else {
+                    alert('Please enter a valid number.');
+                }
+            } else {
+                alert('Please enter valid numbers.');
+            }
+        }
+
+        function toggleButtons(containerId, tabName) {
+            const container = document.getElementById(containerId);
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+
+            if (container.style.display === 'block') {
+                container.innerHTML = ''; // Clear existing buttons
+                for (let i = 0; i < 100; i++) {
+                    let button = document.createElement('button');
+                    button.innerText = i.toString().padStart(2, '0');
+                    button.setAttribute('data-number', i.toString().padStart(2, '0'));
+                    button.onclick = function() {
+                        let amount = prompt('Enter amount to invest in ₹:');
+                        if (amount && !isNaN(amount)) {
+                            amount = parseFloat(amount);
+                            if (amount <= balance) {
+                                investMoney(i.toString().padStart(2, '0'), amount, tabName);
+                            } else {
+                                alert('Insufficient balance.');
+                            }
+                        } else {
+                            alert('Please enter a valid number.');
+                        }
+                    };
+                    container.appendChild(button);
+                }
+                container.appendChild(document.createElement('br'));
+                let investMultipleButton = document.createElement('button');
+                investMultipleButton.className = 'invest-multiple';
+                investMultipleButton.innerText = 'Invest in Multiple';
+                investMultipleButton.onclick = function() { promptInvestment(tabName); };
+                container.appendChild(investMultipleButton);
+            }
+        }
+
+        updateBalance();
+    </script>
+</section>
+<section id="wallet">
+    <h2>Wallet</h2>
+    <p>Manage your finances and transactions here.</p>
+    
+    <button class="add-money-button" onclick="toggleAddMoney()">Add Money</button>
+    <div class="add-money-container" id="add-money-container">
+        <input type="number" id="add-amount" placeholder="Enter amount to add" />
+        <button class="add-money-button" onclick="addMoney()">Add</button>
+    </div>
+    
+    <script>
+        function toggleAddMoney() {
+            const container = document.getElementById('add-money-container');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addMoney() {
+            const amountInput = document.getElementById('add-amount');
+            let amount = parseFloat(amountInput.value);
+            if (!isNaN(amount) && amount > 0) {
+                balance += amount;
+                amountInput.value = ''; // Clear input
+                updateBalance();
+                alert(`₹${amount} added to your wallet. New balance: ₹${balance.toFixed(2)}`);
+            } else {
+                alert('Please enter a valid amount.');
+            }
+        }
+    </script>
+</section>
 <section id="about">
     <h2>About</h2>
     <p>Learn more about Tilak's interests in technology, programming, and digital innovations.</p>
 </section>
-
 <section id="contact">
     <h2>Contact</h2>
     <p>Reach out for collaborations or inquiries through the contact form.</p>
 </section>
-
-<section id="buttons">
-    <h2>Buttons 00 to 99</h2>
-    <div class="button-container">
-        <script>
-            let balance = 1000.00;
-            let history = [];
-
-            function updateBalance() {
-                document.querySelector('.balance').innerText = '₹' + balance.toFixed(2);
-            }
-
-            function updateHistory() {
-                let historyContainer = document.querySelector('.history-container');
-                historyContainer.innerHTML = '';
-                history.forEach(item => {
-                    let historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
-                    historyItem.innerText = `Invested ₹${item.amount} on button ${item.button} at ${item.date}`;
-                    historyContainer.appendChild(historyItem);
-                });
-            }
-
-            for (let i = 0; i < 100; i++) {
-                let button = document.createElement('button');
-                button.innerText = i.toString().padStart(2, '0');
-                button.onclick = function() {
-                    let amount = prompt('Enter amount to invest in ₹:');
-                    if (amount && !isNaN(amount)) {
-                        amount = parseFloat(amount);
-                        if (amount <= balance) {
-                            balance -= amount;
-                            let now = new Date();
-                            let date = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-                            history.push({ button: i.toString().padStart(2, '0'), amount, date });
-                            updateBalance();
-                            updateHistory();
-                            button.classList.add('invested');
-                            alert(`You have invested ₹${amount}. New balance: ₹${balance.toFixed(2)}`);
-                        } else {
-                            alert('Insufficient balance.');
-                        }
-                    } else {
-                        alert('Please enter a valid number.');
-                    }
-                };
-                document.querySelector('.button-container').appendChild(button);
-            }
-
-            updateBalance();
-        </script>
-    </div>
-</section>
-
-<section id="wallet">
-    <h2>Wallet</h2>
-    <p>Manage your finances and transactions here.</p>
-</section>
-
 <section id="history">
     <h2>History</h2>
     <div class="history-container">
         <!-- Transaction history will be displayed here -->
     </div>
 </section>
-
 </body>
 </html>
